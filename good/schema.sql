@@ -49,13 +49,10 @@ CREATE TABLE order_items (
   FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-CREATE INDEX idx_customers_email           ON customers(email);
-CREATE INDEX idx_orders_customer_id        ON orders(customer_id);
-CREATE INDEX idx_order_items_order_id      ON order_items(order_id);
-CREATE INDEX idx_order_items_product_id    ON order_items(product_id);
-CREATE INDEX idx_products_category_id      ON products(category_id);
-CREATE INDEX idx_orders_created_at_desc    ON orders(created_at DESC);
-
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
-CREATE INDEX idx_products_name_trgm        ON products USING gin (name gin_trgm_ops);
-CREATE INDEX idx_products_description_trgm ON products USING gin (description gin_trgm_ops);
+CREATE INDEX idx_customers_email ON customers (LOWER(email));
+CREATE INDEX idx_orders_created_at ON orders (created_at DESC);
+CREATE INDEX idx_products_name_trgm ON products USING gin (name gin_trgm_ops);
+CREATE INDEX idx_orders_customer_id ON orders (customer_id);
+CREATE INDEX idx_order_items_order_id ON order_items (order_id);
+CREATE INDEX idx_order_items_product_id ON order_items (product_id);
+CREATE INDEX idx_products_category_id ON products (category_id);
